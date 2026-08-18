@@ -34,5 +34,5 @@ Make sure your local PostgreSQL is running and the database in your URL exists.
 
 ## Submit
 
-One **image or PDF** showing your `schema.prisma`, your `queries.js`, and the
-terminal output of `node queries.js`. No zip files.
+One **PDF** showing your `schema.prisma`, your `queries.js`, and the
+terminal output of `node queries.js`. PDF only — no images or zip files.
