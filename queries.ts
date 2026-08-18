@@ -1,4 +1,4 @@
-// queries.js — write and run your CRUD here with:  node queries.js
+// queries.ts — write and run your CRUD here with:  npx tsx queries.ts
 //
 // Run each part in order. Read the console output after each one.
 

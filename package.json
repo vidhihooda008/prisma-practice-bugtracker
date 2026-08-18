@@ -2,17 +2,20 @@
   "name": "prisma-practice-bugtracker",
   "version": "1.0.0",
   "type": "module",
-  "description": "Practice: model a small Bug Tracker and run CRUD with Prisma.",
+  "description": "Practice: model a small Bug Tracker and run CRUD with Prisma (TypeScript).",
   "scripts": {
     "migrate": "prisma migrate dev",
     "generate": "prisma generate",
     "studio": "prisma studio",
-    "queries": "node queries.js"
+    "queries": "tsx queries.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3"
   },
   "devDependencies": {
-    "prisma": "^6.19.3"
+    "prisma": "^6.19.3",
+    "typescript": "^5.6.0",
+    "tsx": "^4.19.0",
+    "@types/node": "^22.0.0"
   }
 }
