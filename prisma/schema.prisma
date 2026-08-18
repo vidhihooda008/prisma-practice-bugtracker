@@ -1,0 +1,25 @@
+// Prisma schema — this is your starting point.
+//
+// The generator and datasource are already set up for you.
+// YOUR JOB: add the models below (see the TODO), then run:
+//   npx prisma migrate dev --name init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// TODO: define your schema here.
+//
+//  1. An enum BugStatus with three values: OPEN, IN_PROGRESS, RESOLVED
+//  2. A model Project  (id, name)  that has many Bugs
+//  3. A model Bug      (id, title, status [enum, default OPEN], createdAt)
+//     that belongs to one Project
+//
+// Delete this comment block once you're done.
+// ---------------------------------------------------------------------------
