@@ -4,14 +4,7 @@
 // YOUR JOB: add the models below (see the TODO), then run:
 //   npx prisma migrate dev --name init
 
-generator client {
-  provider = "prisma-client-js"
-}
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
 
 // ---------------------------------------------------------------------------
 // TODO: define your schema here.
@@ -22,4 +15,34 @@ datasource db {
 //     that belongs to one Project
 //
 // Delete this comment block once you're done.
-// ---------------------------------------------------------------------------
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum BugStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+}
+
+model Project {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  bugs Bug[]
+}
+
+model Bug {
+  id        Int       @id @default(autoincrement())
+  title     String
+  status    BugStatus @default(OPEN)
+  createdAt DateTime  @default(now())
+
+  projectId Int
+  project   Project @relation(fields: [projectId], references: [id])
+}
