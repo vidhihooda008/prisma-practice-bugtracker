@@ -1,8 +1,5 @@
-// queries.ts — write and run your CRUD here with:  npx tsx queries.ts
-//
-// Run each part in order. Read the console output after each one.
+import { PrismaClient, BugStatus } from "@prisma/client";
 
-import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
@@ -10,23 +7,70 @@ async function main() {
   await prisma.bug.deleteMany();
   await prisma.project.deleteMany();
 
-  // 1) NESTED CREATE ---------------------------------------------------------
-  // TODO: create ONE Project and, in the same call, THREE Bugs that belong to it.
-  //       Give the bugs different statuses.
+  // 1) NESTED CREATE
+  const project = await prisma.project.create({
+    data: {
+      name: "Checkout",
+      bugs: {
+        create: [
+          {
+            title: "Cart total wrong",
+            status: BugStatus.OPEN,
+          },
+          {
+            title: "Coupon crash",
+            status: BugStatus.OPEN,
+          },
+          {
+            title: "Checkout button broken",
+            status: BugStatus.RESOLVED,
+          },
+        ],
+      },
+    },
+  });
 
+  console.log(`created project "${project.name}" with 3 bugs`);
 
-  // 2) READ WITH include (no N+1) -------------------------------------------
-  // TODO: fetch every Project together with its bugs in a SINGLE query.
-  //       Log the project name and how many bugs it has.
+  // 2) READ WITH include
+  const projects = await prisma.project.findMany({
+    include: {
+      bugs: true,
+    },
+  });
 
+  for (const project of projects) {
+    console.log(
+      `projects with bugs: ${project.name} -> ${project.bugs.length} bugs`
+    );
+  }
 
-  // 3) UPDATE ----------------------------------------------------------------
-  // TODO: move every bug that is still OPEN to IN_PROGRESS.
+  // 3) UPDATE
+  await prisma.bug.updateMany({
+    where: {
+      status: BugStatus.OPEN,
+    },
+    data: {
+      status: BugStatus.IN_PROGRESS,
+    },
+  });
 
+  console.log("moved OPEN bugs to IN_PROGRESS");
 
-  // 4) FILTERED + SORTED READ ------------------------------------------------
-  // TODO: fetch only the IN_PROGRESS bugs, sorted by title (A→Z).
-  //       Log their titles.
+  // 4) FILTERED + SORTED READ
+  const inProgressBugs = await prisma.bug.findMany({
+    where: {
+      status: BugStatus.IN_PROGRESS,
+    },
+    orderBy: {
+      title: "asc",
+    },
+  });
+
+  console.log(
+    "in-progress bugs (sorted):",
+    inProgressBugs.map((bug) => bug.title)
+  );
 }
 
 main()
